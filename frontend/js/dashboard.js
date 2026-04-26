@@ -6,8 +6,8 @@ const user  = JSON.parse(localStorage.getItem('user') || 'null');
 if (!token || !user) window.location.href = 'login.html';
 
 // ── Populate sidebar user chip ──
-document.getElementById('userName').textContent    = user.name;
-document.getElementById('userRole').textContent    = user.role;
+document.getElementById('userName').textContent     = user.name;
+document.getElementById('userRole').textContent     = user.role;
 document.getElementById('avatarInitial').textContent = user.name[0].toUpperCase();
 
 // Show "Create Event" link for organizers/admins
@@ -49,23 +49,34 @@ function renderEvents(events) {
     return;
   }
 
-  // Stagger card animation delay
-  grid.innerHTML = events.map((ev, i) => `
-    <div class="event-card" style="animation-delay:${i * 0.06}s">
-      <span class="event-card-tag">📍 ${ev.location}</span>
-      <h3>${ev.title}</h3>
-      <p class="desc">${ev.description || 'No description provided.'}</p>
-      <div class="event-meta">
-        <span>🗓️ <strong>${fmtDate(ev.date)}</strong></span>
-        <span>👤 <strong>${ev.organizer?.name || 'Unknown'}</strong></span>
-      </div>
-      <div class="event-card-footer">
-        <span class="capacity-badge">👥 Capacity: ${ev.capacity}</span>
-        <button class="btn btn-outline btn-sm" onclick="registerEvent('${ev._id}', this)">
-          Register
-        </button>
-      </div>
-    </div>`).join('');
+  const isStudent   = user.role === 'student';
+  const isOrganizer = user.role === 'organizer' || user.role === 'admin';
+
+  grid.innerHTML = events.map((ev, i) => {
+    const registerBtn = isStudent
+      ? '<button class="btn btn-outline btn-sm" onclick="registerEvent(\'' + ev._id + '\', this)">Register</button>'
+      : '';
+
+    const participantsBtn = isOrganizer
+      ? '<button class="btn btn-outline btn-sm" onclick="viewParticipants(\'' + ev._id + '\', \'' + ev.title + '\')">👥 Participants</button>'
+      : '';
+
+    return `
+      <div class="event-card" style="animation-delay:${i * 0.06}s">
+        <span class="event-card-tag">📍 ${ev.location}</span>
+        <h3>${ev.title}</h3>
+        <p class="desc">${ev.description || 'No description provided.'}</p>
+        <div class="event-meta">
+          <span>🗓️ <strong>${fmtDate(ev.date)}</strong></span>
+          <span>👤 <strong>${ev.organizer?.name || 'Unknown'}</strong></span>
+        </div>
+        <div class="event-card-footer">
+          <span class="capacity-badge">👥 Capacity: ${ev.capacity}</span>
+          ${registerBtn}
+          ${participantsBtn}
+        </div>
+      </div>`;
+  }).join('');
 }
 
 // ── Register for event ──
@@ -116,6 +127,53 @@ async function loadEvents() {
         <p>Make sure the backend server is running on port 5000.</p>
       </div>`;
   }
+}
+
+// ── View Participants Modal ──
+async function viewParticipants(eventId, eventTitle) {
+  try {
+    const res  = await fetch(`${API}/events/${eventId}/participants`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    const data = await res.json();
+
+    const rows = data.length
+      ? data.map((p, i) => `
+          <tr>
+            <td>${i + 1}</td>
+            <td>${p.name}</td>
+            <td>${p.email}</td>
+            <td>${new Date(p.registeredAt).toLocaleString('en-IN')}</td>
+          </tr>`).join('')
+      : '<tr><td colspan="4" style="text-align:center">No registrations yet.</td></tr>';
+
+    document.getElementById('participantsModal').innerHTML = `
+      <div class="modal-overlay" onclick="closeModal()">
+        <div class="modal-box" onclick="event.stopPropagation()">
+          <div class="modal-header">
+            <h3>👥 ${eventTitle}</h3>
+            <button onclick="closeModal()" class="modal-close">✕</button>
+          </div>
+          <p style="margin-bottom:12px;color:var(--text-muted)">${data.length} participant(s)</p>
+          <div class="table-wrap">
+            <table class="participants-table">
+              <thead>
+                <tr><th>#</th><th>Name</th><th>Email</th><th>Registered At</th></tr>
+              </thead>
+              <tbody>${rows}</tbody>
+            </table>
+          </div>
+        </div>
+      </div>`;
+
+    document.getElementById('participantsModal').style.display = 'block';
+  } catch {
+    showAlert('errorMsg', 'Failed to load participants.');
+  }
+}
+
+function closeModal() {
+  document.getElementById('participantsModal').style.display = 'none';
 }
 
 loadEvents();
