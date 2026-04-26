@@ -13,8 +13,8 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
-app.use('/api/auth',          require('./routes/auth'));
-app.use('/api/events',        require('./routes/events'));
+app.use('/api/auth',require('./routes/auth'));
+app.use('/api/events',require('./routes/events'));
 app.use('/api/registrations', require('./routes/registrations'));
 
 app.get('/', (req, res) => res.send('Campus Event API running'));

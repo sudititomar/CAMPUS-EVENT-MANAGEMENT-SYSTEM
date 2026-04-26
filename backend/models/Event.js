@@ -8,5 +8,4 @@ const EventSchema = new mongoose.Schema({
   capacity:    { type: Number, default: 100 },
   organizer:   { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }
 }, { timestamps: true });
-
 module.exports = mongoose.model('Event', EventSchema);
