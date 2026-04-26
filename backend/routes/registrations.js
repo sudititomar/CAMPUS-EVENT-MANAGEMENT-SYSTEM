@@ -28,10 +28,12 @@ router.post('/', protect, async (req, res) => {
 // GET /api/registrations/my - get logged-in user's registrations
 router.get('/my', protect, async (req, res) => {
   try {
-    const regs = await Registration.find({ user: req.user.id }).populate('event', 'title date location');
-    res.json(regs);
+    const registrations = await Registration.find({ user: req.user.id })
+      .populate('event', 'title location date capacity organizer')
+      .sort({ createdAt: -1 });
+    res.json(registrations);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(500).json({ message: 'Failed to fetch registrations.' });
   }
 });
 
