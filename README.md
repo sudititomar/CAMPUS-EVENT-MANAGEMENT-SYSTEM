@@ -14,7 +14,7 @@ Users can register, log in, create events, and register for events.
 * Register for Events
 * View My Registrations
 * Cancel Registration
-* Role-based users (Student / Organizer / Admin)
+* Role-based users (Student / Organizer )
 
 ---
 
