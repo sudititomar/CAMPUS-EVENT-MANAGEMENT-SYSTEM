@@ -14,7 +14,7 @@ Users can register, log in, create events, and register for events.
 * Register for Events
 * View My Registrations
 * Cancel Registration
-* Role-based users (Student / Organizer )
+* Role-based users (Student / Organizer)
 
 ---
 
@@ -124,5 +124,5 @@ We followed the **Waterfall Model**:
 * Add email notifications
 * Improve UI/UX
 * Add event images
-MVC Structure
+## MVC Structure
 ---
