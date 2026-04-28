@@ -66,7 +66,7 @@ git clone <your-repo-link>
 cd backend
 ```
 
-3. Install dependencies:
+3. Install the dependencies:
 
 ```
 npm install
