@@ -9,7 +9,7 @@ Users can register, log in, create events, and register for events.
 
 ## 🚀 Features
 
-* User Registration & Login (Authentication)
+* User Registration & Login(Authentication)
 * Create and Manage Events
 * Register for Events
 * View My Registrations
@@ -18,57 +18,43 @@ Users can register, log in, create events, and register for events.
 
 ---
 
-## 🛠️ Technologies Used
-
+## 🛠️ Technologies used
 ### Frontend:
-
 * HTML
 * CSS
 * JavaScript
 
 ### Backend:
-
 * Node.js
 * Express.js
 
 ### Database:
-
 * MongoDB
 
 ---
 
 ## 🏗️ Architecture
-
 This project follows **Client-Server Architecture**:
-
 * Frontend (Client) → Sends requests
 * Backend (Server) → Processes requests
 * Database → Stores data
-
 We used a **simplified MVC pattern**:
-
 * Models → Database schemas
 * Routes → Handle logic (controllers included in routes)
-
----
 
 ## ⚙️ Installation & Setup
 
 1. Clone the repository:
 
-```
 git clone <your-repo-link>
-```
+
 
 2. Go to backend folder:
 
-```
 cd backend
-```
 
 3. Install the dependencies:
 
-```
 npm install
 ```
 
@@ -85,7 +71,7 @@ JWT_SECRET=your_secret_key
 node app.js
 ```
 
-6. Open in browser:
+6. open in Browser:
 
 ```
 http://localhost:5000
@@ -98,14 +84,14 @@ http://localhost:5000
 ```
 CAMPUS-EVENT-MANAGEMENT-SYSTEM/
 │
-├── backend/
+├── Backend/
 │   ├── config/
 │   ├── models/
 │   ├── routes/
 │   ├── middleware/
 │   └── app.js
 │
-├── frontend/
+├── Frontend/
 │   ├── login.html
 │   ├── register.html
 │   ├── dashboard.html
