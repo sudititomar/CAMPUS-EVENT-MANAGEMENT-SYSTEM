@@ -72,7 +72,7 @@ cd backend
 npm install
 ```
 
-4. Create `.env` file and add:
+4. Create `.env` file & add:
 
 ```
 MONGO_URI=your_mongodb_connection
